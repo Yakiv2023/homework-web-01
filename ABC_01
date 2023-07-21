@@ -1,0 +1,78 @@
+from abc import ABC, abstractmethod
+
+from prettytable import PrettyTable
+
+
+class UserInterface(ABC):
+    @abstractmethod
+    def show_message(self, message):
+        pass
+
+    @abstractmethod
+    def show_table(self, table):
+        pass
+
+    @abstractmethod
+    def get_user_input(self, prompt):
+        pass
+
+
+class ConsoleUI(UserInterface):
+    # Код для відображення повідомлення у графічному інтерфейсі
+    def show_message(self, message):
+        print(message)
+
+    # Код для відображення таблиці у графічному інтерфейсі
+    def show_table(self, table):
+        print(table)
+
+    # Код для отримання вводу від користувача у графічному інтерфейсі
+    def get_user_input(self, prompt):
+        return input(prompt)
+
+
+class PersonalHelper:
+    def __init__(self, ui):
+        self.ui = ui
+
+    def main(self):
+        self.ui.show_message("\nHello, this is Personal Helper")
+
+        table = PrettyTable(["Command", "Instruction"])
+        table.add_rows(
+            [
+                ["1", "Go to Address Book"],
+                ["2", "Go to Notes"],
+                ["3", "Go to Sorter"],
+                ["4", "Exit the program"],
+            ]
+        )
+
+        while True:
+            self.ui.show_message("\nPersonal Helper Menu:")
+            self.ui.show_table(table)
+            string = self.ui.get_user_input("Enter command to Personal Helper: ").lower()
+
+            if string == "1":
+                self.ui.show_message("\n\nYou went to Address Book")
+                # Логіка викликів адресної книги
+                self.ui.show_message("\n\nYou went to Personal Helper")
+            elif string == "2":
+                self.ui.show_message("\n\nYou went to Notes")
+                # Логіка виклику Notes
+                self.ui.show_message("\n\nYou went to Personal Helper")
+            elif string == "3":
+                self.ui.show_message("\n\nYou went to Sorter")
+                # Логіка, повязана з сортувальником викликів
+                self.ui.show_message("\n\nYou went to Personal Helper")
+            elif string == "4":
+                self.ui.show_message("Good bye!")
+                break
+            else:
+                self.ui.show_message("Invalid command")
+
+
+if __name__ == "__main__":
+    console_ui = ConsoleUI()
+    helper = PersonalHelper(console_ui)
+    helper.main()
